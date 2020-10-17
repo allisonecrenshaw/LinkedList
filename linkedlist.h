@@ -26,7 +26,7 @@ public:
 
 private:
     // private vars or method prototypes go here
-    // none for now but may create helper functions later
+    Node *head;
 
 }; // end class
 
