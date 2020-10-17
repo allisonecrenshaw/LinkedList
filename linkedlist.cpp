@@ -14,7 +14,7 @@ Purpose: This program constructs a fully
  * constructor and destructor
 *******************************/
 LinkedList::LinkedList() {
-
+    head = NULL;
 }
 LinkedList::~LinkedList() {
 
@@ -25,6 +25,10 @@ LinkedList::~LinkedList() {
 *******************************/
 bool LinkedList::addNode(int, string) {
     bool ok = false;
+
+    // if head is null, add args as head node
+
+
     return ok;
 }
 
