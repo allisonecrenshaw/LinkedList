@@ -23,11 +23,33 @@ LinkedList::~LinkedList() {
 /*******************************
  * add, delete, and getNode
 *******************************/
-bool LinkedList::addNode(int, string) {
+bool LinkedList::addNode(int passedID, string passedData) {
     bool ok = false;
+    Node *thisNode;
 
-    // if head is null, add args as head node
+    // check if given id is negative or already exists
+    if (passedID < 0) {
+        ok = false;
+    }
+    else if (head == NULL) {
+        // if head is null, assign passed args to head
+        ok = true;
+        head->data.id = passedID;
+        head->data.data = passedData;
+        // need to assign next and prev as null?
+    }
+    else { // if not negative and not first item (head) of list, then...
+        /* compare to first node
+         *   if not a dupe, check < and >
+         *      if less than head, use addHead function
+         *      if greater than head, go to next
+         * at next, can create a loop for non-head nodes
+         * at next, if not dupe, check < and > current
+         *      if less than current, insert before current
+         *      else (greater than current),
+         *          check if next node to see if adding middle or tail */
 
+    }
 
     return ok;
 }
