@@ -9,6 +9,11 @@ Purpose: This program constructs a fully
 #define LINKED_LIST_H
 
 #include "data.h"
+#include <iostream>     /* cout, endl */
+
+using std::cout;
+using std::endl;
+
 
 class LinkedList {
 
