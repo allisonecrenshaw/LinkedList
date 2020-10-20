@@ -33,10 +33,13 @@ bool LinkedList::addNode(int passedID, string passedData) {
     }
     else if (head == NULL) {
         // if head is null, assign passed args to head
+        // prev and next will be NULL
         ok = true;
+        head = new Node;
         head->data.id = passedID;
         head->data.data = passedData;
-        // need to assign next and prev as null?
+        head->prev = NULL;
+        head->next = NULL;
     }
     else { // if not negative and not first item (head) of list, then...
         /* compare to first node
@@ -49,6 +52,7 @@ bool LinkedList::addNode(int passedID, string passedData) {
          *      else (greater than current),
          *          check if next node to see if adding middle or tail */
 
+        // if head exists, compare passedID to ID of next node in list
     }
 
     return ok;
