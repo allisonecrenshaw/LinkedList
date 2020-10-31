@@ -22,6 +22,7 @@ public:
     ~LinkedList(); // destructor
 
     bool addNode(int, string);
+    void addHeadNode(int, string);
     bool deleteNode(int);
     bool getNode(int, Data*);
     void printList(bool=false);
