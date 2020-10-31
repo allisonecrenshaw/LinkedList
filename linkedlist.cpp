@@ -56,8 +56,16 @@ bool LinkedList::addNode(int passedID, string passedInfo) {
     return ok;
 }
 
-void LinkedList::addHeadNode(int, string) {
-    
+void LinkedList::addHeadNode(int passedID, string passedInfo) {
+    // allocate mem for a new node
+    Node *newNode = new Node; // will hold passed data
+    newNode->data.id = passedID;
+    newNode->data.data = passedInfo;
+    newNode->next = head;
+
+    // now put in head's position and reassign things as needed
+    head->prev = newNode;
+    head = newNode;
 }
 
 bool LinkedList::deleteNode(int) {
