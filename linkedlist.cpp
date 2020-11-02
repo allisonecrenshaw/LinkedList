@@ -47,33 +47,32 @@ bool LinkedList::addNode(int passedID, string passedString) {
     return ok;
 } // end addNode
 
+
+
 bool LinkedList::compareNodes(int passedID, string passedString) {
     bool ok = false;
     Node *current;
     Node *previous;
 
+    // start with head and begin comparisons
     current = head;
-    while (current) { //move to next, compare passedID to ID in that node
-        // if else structure to determine when/how to add node
-        if (passedID == current->data.id) { ok = false; } // repeated ID
-        else { // if ID not repeated, move to add the node
-            // if added node needs to replace the head node
-            if (current->data.id == head->data.id &&
-                passedID < current->data.id) {
-                // call method for adding head node
+    while (current && passedID != current->data.id && ok == false) {
+        if (passedID < current->data.id) { // if less than current node, insert before
+            if (!current->prev) // if needing to replace head node
                 addHeadNode(passedID, passedString);
-            } // end if
-            else { // middle and tail nodes (not head)
-                if (current->prev) // already checked not head, if also not tail
-                    addMiddleNode(passedID, passedString);
-                else
-                    addTailNode(passedID, passedString);
-            }
-        } // end else
-        current = NULL; // just to stop endless loop while I get everything figured out
+            else if (!current->next)
+                addTailNode(passedID, passedString);
+            else
+                addMiddleNode(passedID, passedString, previous, current);
+            ok = true;
+        } // end if clause for inserting before current node
+        else {
+            previous = current;
+            current = current->next; // move to next node and repeat loop
+        }// already checked for dupe, already checked for insertion
     } // end while
     return ok;
-}
+} // end compareNodes
 
 
 
@@ -93,15 +92,30 @@ void LinkedList::addHeadNode(int passedID, string passedString) {
     // now put in head's position and reassign things as needed
     head->prev = newNode;
     head = newNode;
-}
+} // end addHeadNode()
 
-void LinkedList::addMiddleNode(int passedID, string passedString) {
+void LinkedList::addMiddleNode(int passedID, string passedString,
+                               Node* previous, Node* current) {
+    // allocate mem for new node
+    Node *newNode = new Node;
+    newNode->data.id = passedID;
+    newNode->data.data = passedString;
 
-}
+    // reassign previous and next vals so that links are not lost
+    current->prev = newNode;
+    previous->next = newNode;
+    newNode->prev = previous;
+    newNode->next = current;
+} // end addMiddleNode()
 
 void LinkedList::addTailNode(int passedID, string passedString) {
+    // allocate mem for new node
+    Node *newNode = new Node;
+    newNode->data.id = passedID;
+    newNode->data.data = passedString;
 
-}
+    // reassign 
+} // end addTailNode()
 
 
 
