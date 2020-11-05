@@ -40,14 +40,13 @@ bool LinkedList::addNode(int passedID, string passedString) {
             head->data.data = passedString;
             head->prev = nullptr;
             head->next = nullptr;
-            cout << "Original head node added." << endl;
         }
         else { // if not negative and head exists
             ok = compareNodes(passedID, passedString);
         } // end outer else (for valid data that is not the first node added)
     } // end of if value is non-negative
     else {
-        cout << "Given value is negative." << endl;
+        cout << "Given value is negative...";
     }
     return ok;
 } // end addNode
@@ -59,42 +58,29 @@ bool LinkedList::compareNodes(int passedID, string passedString) {
     Node *current;
     Node *previous;
 
-    // start with head and begin comparisons
-    current = head;
+    // check for new head node
+    if (passedID < head->data.id) {
+        ok = true;
+        addHeadNode(passedID, passedString);
+    }
 
-    // loop as long as something exists and ok is false
+    // start with head
+    previous = head;
+    current = head->next;
+
+    // while not ok and next still exists
     while (current && !ok) {
-        if (passedID == current->data.id) {
-            cout << "No-go, this is a duplicate." << endl;
-            current = nullptr; // break the loop if duplicate
-        }
-        else { // if it's not a duplicate
-            // if passed val is less than the current head
-            if (passedID < current->data.id && !current->prev) { // aka if < head
-                cout << "Adding a new head node." << endl;
-                addHeadNode(passedID, passedString);
+        if (current->data.id > passedID) {
+            if (passedID != previous->data.id) {
                 ok = true;
-            } // end addHeadNode clause
-            else if (passedID > current->data.id && !current->next) {
-                // if greater than current and current is tail
-                cout << "Adding a new tail node." << endl;
-                addTailNode(passedID, passedString, current);
-                ok = true;
-            } // end addTailNode clause
-            else if (passedID < current->data.id) {
-                // less than current, but current isn't the head
-                cout << "Adding a middle node." << endl;
                 addMiddleNode(passedID, passedString, current, previous);
-                cout << "Changing ok to true." << endl;
-                ok = true;
-            }
-            else {
-                previous = current;
-                current = current->next;
-            }
-        } // end of else (not a duplicate)
-    } // end while loop
+            } // end inner if (check for dupe in middle)
+        } // end outer if (checking for middle)
 
+        // reassign vals to continue the search
+        previous = current;
+        current = current->next;
+    }
     return ok;
 } // end compareNodes
 
