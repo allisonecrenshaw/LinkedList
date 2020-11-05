@@ -45,9 +45,7 @@ bool LinkedList::addNode(int passedID, string passedString) {
             ok = compareNodes(passedID, passedString);
         } // end outer else (for valid data that is not the first node added)
     } // end of if value is non-negative
-    else {
-        cout << "Given value is negative...";
-    }
+
     return ok;
 } // end addNode
 
@@ -55,32 +53,38 @@ bool LinkedList::addNode(int passedID, string passedString) {
 
 bool LinkedList::compareNodes(int passedID, string passedString) {
     bool ok = false;
+    bool stop = false;
     Node *current;
     Node *previous;
 
-    // check for new head node
-    if (passedID < head->data.id) {
+    // start with head
+    current = head;
+
+    // while not ok and next still exists
+    while (current && !stop) {
+        // if possible insertion before current, stop.
+        if (passedID < current->data.id)
+            stop = true;
+        else {
+            previous = current;
+            current = current->next;
+        }
+    } // end while
+
+    // select which addNode method to use
+    if (passedID < current->data.id && !current->prev) {
         ok = true;
         addHeadNode(passedID, passedString);
     }
-
-    // start with head
-    previous = head;
-    current = head->next;
-
-    // while not ok and next still exists
-    while (current && !ok) {
-        if (current->data.id > passedID) {
-            if (passedID != previous->data.id) {
-                ok = true;
-                addMiddleNode(passedID, passedString, current, previous);
-            } // end inner if (check for dupe in middle)
-        } // end outer if (checking for middle)
-
-        // reassign vals to continue the search
-        previous = current;
-        current = current->next;
+    else if (passedID < current->data.id && passedID != previous->data.id) {
+        ok = true;
+        addMiddleNode(passedID, passedString, current, previous);
     }
+    else if (passedID > current->data.id && !current->next) {
+        ok = true;
+        addTailNode(passedID, passedString, current);
+    }
+
     return ok;
 } // end compareNodes
 
