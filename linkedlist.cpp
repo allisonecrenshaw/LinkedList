@@ -40,14 +40,12 @@ bool LinkedList::addNode(int passedID, string passedString) {
             head->data.data = passedString;
             head->prev = NULL;
             head->next = NULL;
-            cout << "First head added...";
+            //cout << "First head added...";
         }
         else { // if not negative and head exists
             ok = compareNodes(passedID, passedString);
         } // end outer else (for valid data that is not the first node added)
     } // end of if value is non-negative
-
-    printList();
 
     return ok;
 } // end addNode
@@ -65,38 +63,38 @@ bool LinkedList::compareNodes(int passedID, string passedString) {
     current = head;
 
     // while not ok and next still exists
-    cout << "Begin while loop." << endl;
-    while (current && stop == false && loopCount < 20) {
+    //cout << "Begin while loop." << endl;
+    while (current && stop == false) {
         loopCount++;
-        cout << "Loop #" << loopCount << "...current ID is " << current->data.id << endl;
+        //cout << "Loop #" << loopCount << "...current ID is " << current->data.id << endl;
         if (passedID < current->data.id) {
-            cout << "Passed ID < current ID, changing stop to true." << endl;
+            //cout << "Passed ID < current ID, changing stop to true." << endl;
             stop = true;
         }
         else {
-            cout << "Moving to next item." << endl;
-            cout << "Changing previous to current"<< endl;
+            //cout << "Moving to next item." << endl;
+            //cout << "Changing previous to current"<< endl;
             previous = current;
-            cout << "Changing current to next." << endl;
+            //cout << "Changing current to next." << endl;
             current = current->next;
         }
     } // end while
 
-    // select which addNode method to use
-    if (passedID < current->data.id && !current->prev) {
+    // head case: current not null (haven't reached tail) + less than head
+    if (current && passedID < current->data.id && !current->prev) {
         ok = true;
         addHeadNode(passedID, passedString);
-        cout << "Head added...";
-    }
-    else if (passedID < current->data.id && passedID != previous->data.id) {
+        //cout << "Head added...";
+    } // else if we're less than current, but not head (prev), and not equal to the prev
+    else if (current && passedID < current->data.id && passedID != previous->data.id) {
         ok = true;
         addMiddleNode(passedID, passedString, previous, current);
-        cout << "Middle added...";
-    }
-    else if (passedID > current->data.id) {
+        //cout << "Middle added...";
+    } // else if we are at the tail
+    else if (!current && passedID > previous->data.id) {
         ok = true;
-        addTailNode(passedID, passedString, current);
-        cout << "Tail added...";
+        addTailNode(passedID, passedString, previous);
+        //cout << "Tail added...";
     }
 
     return ok;
@@ -137,9 +135,7 @@ void LinkedList::addMiddleNode(int passedID, string passedString,
     newNode->next = current;
 } // end addMiddleNode()
 
-void LinkedList::addTailNode(int passedID, string passedString, Node* current) {
-    cout << "Inside add tail node." << endl;
-    cout << "Current is " << current->data.id << endl;
+void LinkedList::addTailNode(int passedID, string passedString, Node* previous) {
     // allocate mem for new node
     Node *newNode = new Node;
     newNode->data.id = passedID;
@@ -147,8 +143,8 @@ void LinkedList::addTailNode(int passedID, string passedString, Node* current) {
 
     // reassign current to new tail, make tail point to current as its prev
     newNode->next = NULL;
-    newNode->prev = current;
-    current->next = newNode;
+    newNode->prev = previous;
+    previous->next = newNode;
 } // end addTailNode()
 
 
@@ -183,7 +179,7 @@ void LinkedList::printList(bool) {
 
     cout << endl << line << endl;
     cout << "Printing linked list..." << endl;
-    while (current && loop < 20) {
+    while (current) {
         loop++;
         cout << current->data.id << endl;
         current = current->next;
