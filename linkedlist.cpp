@@ -153,9 +153,37 @@ void LinkedList::addTailNode(int passedID, string passedString, Node* previous) 
 /*******************************
  * deleteNode, getNode
 *******************************/
-bool LinkedList::deleteNode(int) {
-    bool ok = false;
-    return ok;
+bool LinkedList::deleteNode(int id) {
+    // bool deleteNode(int); pass this method an id to delete.
+    // Return true or false to indicate success or failure.
+    // Delete the memory the node was using.
+    bool found = false;
+    Node *current;
+
+    current = head;
+    while (current && !found) {
+        if (id == current->data.id)
+            found = true;
+        else
+            current = current->next;
+    }
+
+    if (found) {
+        if (!current->prev) {
+            current->next->prev = NULL;
+            head = current->next;
+            delete current;
+        } else if (!current->next) {
+            current->prev->next = NULL;
+            delete current;
+        } else {
+            current->prev->next = current->next;
+            current->next->prev = current->prev;
+            delete current;
+        }
+    }
+
+    return found;
 }
 
 bool LinkedList::getNode(int, Data *) {
@@ -176,7 +204,6 @@ void LinkedList::printList(bool) {
     string line = "******************************";
     int loop = 0;
 
-
     cout << endl << line << endl;
     cout << "Printing linked list..." << endl;
     while (current) {
@@ -185,11 +212,17 @@ void LinkedList::printList(bool) {
         current = current->next;
     }
     cout << "End of linked list." << endl << line << endl;
-
 }
 
 int LinkedList::getCount() {
     int count = 0;
+    Node *current = head;
+
+    while (current) {
+        count++;
+        current = current->next;
+    }
+
     return count;
 }
 
