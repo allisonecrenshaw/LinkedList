@@ -154,9 +154,6 @@ void LinkedList::addTailNode(int passedID, string passedString, Node* previous) 
  * deleteNode, getNode
 *******************************/
 bool LinkedList::deleteNode(int id) {
-    // bool deleteNode(int); pass this method an id to delete.
-    // Return true or false to indicate success or failure.
-    // Delete the memory the node was using.
     bool found = false;
     Node *current;
 
@@ -168,10 +165,14 @@ bool LinkedList::deleteNode(int id) {
             current = current->next;
     }
 
-    if (found) {
-        if (!current->prev) {
-            current->next->prev = NULL;
+    if (found && current) {
+        if (!current->prev && !current->next) {
+            head = NULL;
+            delete current;
+        }
+        else if (!current->prev) {
             head = current->next;
+            head->prev = NULL;
             delete current;
         } else if (!current->next) {
             current->prev->next = NULL;
@@ -182,14 +183,30 @@ bool LinkedList::deleteNode(int id) {
             delete current;
         }
     }
-
     return found;
-}
+} // end deleteNode()
 
-bool LinkedList::getNode(int, Data *) {
-    bool ok = false;
-    return ok;
-}
+bool LinkedList::getNode(int id, Data* newData) {
+    bool found = false;
+    Node *current;
+
+    current = head;
+    while (current && !found) {
+        if (id == current->data.id) {
+            found = true;
+        } else
+            current = current->next;
+    }
+
+    if (found) {
+        newData->id = current->data.id;
+        newData->data = current->data.data;
+    } else {
+        newData->id = -1;
+        newData->data = "";
+    }
+    return found;
+} // end getNode()
 
 
 
@@ -217,21 +234,37 @@ void LinkedList::printList(bool) {
 int LinkedList::getCount() {
     int count = 0;
     Node *current = head;
-
     while (current) {
         count++;
         current = current->next;
     }
-
     return count;
 }
 
 bool LinkedList::clearList() {
-    return false;
+    Node *current;
+    Node *next;
+
+    current = head;
+    while (current) {
+        next = current->next;
+        delete current;
+        current = next;
+    }
+    head = NULL;
+    return true;
 }
 
-bool LinkedList::exists(int) {
+bool LinkedList::exists(int id) {
     bool exists = false;
+    Node *current;
+    current = head;
+    while (current && !exists) {
+        if (id == current->data.id)
+            exists = true;
+        else
+            current = current->next;
+    }
     return exists;
 }
 
