@@ -22,10 +22,6 @@ public:
     ~LinkedList(); // destructor
 
     bool addNode(int, string);
-        bool compareNodes(int, string);
-        void addHeadNode(int, string);
-        void addMiddleNode(int, string, Node*, Node*);
-        void addTailNode(int, string, Node*);
     bool deleteNode(int);
     bool getNode(int, Data*);
     void printList(bool=false);
@@ -36,6 +32,10 @@ public:
 private:
     // private vars or method prototypes go here
     Node *head;
+    bool compareNodes(int, string);
+    void addHeadNode(int, string);
+    void addMiddleNode(int, string, Node*, Node*);
+    void addTailNode(int, string, Node*);
 
 }; // end class
 
