@@ -17,7 +17,7 @@ LinkedList::LinkedList() {
     head = NULL;
 }
 LinkedList::~LinkedList() {
-
+    clearList();
 }
 
 
