@@ -215,20 +215,37 @@ bool LinkedList::getNode(int id, Data* newData) {
 /*******************************
  * remaining functions
 *******************************/
-void LinkedList::printList(bool) {
+void LinkedList::printList(bool order) {
     Node *current;
+    bool tailReached = false;
     current = head;
     string line = "******************************";
-    int loop = 0;
 
-    cout << endl << line << endl;
-    cout << "Printing linked list..." << endl;
-    while (current) {
-        loop++;
-        cout << current->data.id << endl;
-        current = current->next;
+    if (order == false) { // if false, print list forward (default)
+        cout << endl << line << endl;
+        cout << "Printing linked list..." << endl;
+        while (current) {
+            cout << current->data.id << endl;
+            current = current->next;
+        }
+        cout << "End of linked list." << endl << line << endl;
     }
-    cout << "End of linked list." << endl << line << endl;
+    else { // if true, print list backwards
+        cout << endl << line << endl;
+        cout << "Printing linked list backwards..." << endl;
+        while (!tailReached) {
+            if (!current->next) {
+                tailReached = true;
+            }
+            else
+                current = current->next;
+        }
+        while (current) {
+            cout << current->data.id << endl;
+            current = current->prev;
+        }
+        cout << "End of linked list." << endl << line << endl;
+    }
 }
 
 int LinkedList::getCount() {
